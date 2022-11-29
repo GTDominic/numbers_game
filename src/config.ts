@@ -6,7 +6,7 @@ export const GameConfig: Phaser.Types.Core.GameConfig = {
   scene: [GameScene],
   scale: {
     parent: 'game',
-    width: 600,
+    width: 630,
     height: 800
   },
   backgroundColor: 0x4ac7ff
