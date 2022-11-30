@@ -1,13 +1,18 @@
 import { GameCode } from "../scripts/gamecode";
+import { Constants } from "../config";
 
 export class GameScene extends Phaser.Scene {
   private gameboard = new GameCode;
   private gamestate: {
     selPos: {x: number, y: number},
     elements: Array<Array<{rect: any, number: any}>>,
+    scrollHelper: any,
+    cursors: any,
   } = {
     selPos: {x: 0, y: 0},
     elements: [],
+    scrollHelper: null,
+    cursors: null,
   };
 
   constructor() {
@@ -18,20 +23,17 @@ export class GameScene extends Phaser.Scene {
 
   create(): void {
     this.draw();
+    this.gamestate.scrollHelper = this.physics.add.sprite(0, Constants.height / 2, '').setScale(0);
+    this.cameras.main.startFollow(this.gamestate.scrollHelper, true, 0.5, 0.5);
+    this.gamestate.scrollHelper.setCollideWorldBounds(true);
     this.cameras.main.useBounds = true;
+    this.gamestate.cursors = this.input.keyboard.createCursorKeys();
   }
 
   update(): void {
-    this.input.on('wheel', (pointer: any, gameObjects: any, deltaX: any, deltaY: any, deltaZ: any) => {
-      if(deltaY > 0) {
-        console.log(deltaY + ' 1 ' + this.cameras.main.y);
-        if(this.cameras.main.y > -(this.gameboard.board.length * 30 - this.sys.canvas.height)) this.cameras.main.y -= 0.1;
-      }
-      if(deltaY < 0) {
-        console.log(deltaY + ' 2 ' + this.cameras.main.y);
-        if(this.cameras.main.y < 0) this.cameras.main.y += 0.1;
-      }
-    })
+    if(this.gamestate.cursors.down.isDown) this.gamestate.scrollHelper.setVelocityY(200);
+    else if (this.gamestate.cursors.up.isDown) this.gamestate.scrollHelper.setVelocityY(-200);
+    else this.gamestate.scrollHelper.setVelocityY(0);
   }
 
   private draw(): void {
@@ -53,5 +55,7 @@ export class GameScene extends Phaser.Scene {
         }
       }
     }
+    this.cameras.main.setBounds(0, 0, Constants.width, this.gameboard.board.length * 30);
+    this.physics.world.setBounds(0, Constants.height / 2, Constants.width, this.gameboard.board.length * 30 - Constants.height);
   }
 }
