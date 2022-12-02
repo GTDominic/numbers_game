@@ -50,6 +50,9 @@ export class GameScene extends Phaser.Scene {
       this.gamestate.elements[y][x].number.setColor('#00ff00');
       return;
     }
+    this.gameboard.cross(this.gamestate.selPos, {x: x, y: y});
+    this.gamestate.selPos = null;
+    this.draw();
   }
 
   private draw(): void {
