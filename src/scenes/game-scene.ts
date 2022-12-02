@@ -58,6 +58,7 @@ export class GameScene extends Phaser.Scene {
     // future feature TODO's:
     // Custom Color Support
     // Neighbor Highlighting
+    // Call draw function only if necessary
     if(!this.gamestate.selPos) {
       this.gamestate.selPos = {x: x, y: y};
       this.gamestate.elements[y][x].number.setColor('#0000ff');
@@ -74,6 +75,10 @@ export class GameScene extends Phaser.Scene {
   }
 
   private draw(): void {
+    
+  }
+
+  private draw_old(): void {
     for(let i = 0; i < this.gamestate.elements.length; i++) {
       for(let j = 0; j < this.gamestate.elements[i].length; j++) {
         this.gamestate.elements[i][j].number.destroy();
