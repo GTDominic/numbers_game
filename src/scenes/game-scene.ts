@@ -4,12 +4,14 @@ import { Constants } from "../config";
 export class GameScene extends Phaser.Scene {
   private gameboard = new GameCode;
   private gamestate: {
-    selPos: {x: number, y: number},
-    elements: Array<Array<{rect: any, number: any}>>,
+    selPos1: {x: number, y: number},
+    selPos2: {x: number, y: number},
+    elements: Array<Array<{rect: Phaser.GameObjects.Rectangle, number: Phaser.GameObjects.Text}>>,
     scrollHelper: any,
     cursors: any,
   } = {
-    selPos: {x: 0, y: 0},
+    selPos1: {x: null, y: null},
+    selPos2: {x: null, y: null},
     elements: [],
     scrollHelper: null,
     cursors: null,
@@ -36,7 +38,12 @@ export class GameScene extends Phaser.Scene {
     else this.gamestate.scrollHelper.setVelocityY(0);
   }
 
+  private selection(element: any, x: number, y: number) {
+    console.log('x: ' + x + '; y: ' + y);
+  }
+
   private draw(): void {
+    this.gamestate.elements = [];
     for(let i = 0; i < this.gameboard.board.length; i++) {
       this.gamestate.elements.push([]);
       for(let j = 0; j < this.gameboard.board[i].length; j++) {
@@ -47,6 +54,8 @@ export class GameScene extends Phaser.Scene {
             rect: this.add.rectangle(x, y, 50, 30, 0x000000), 
             number: this.add.text(x - 7, y - 12, this.gameboard.board[i][j].value.toString(), { fontFamily: 'monospace', color: '#00ff00', fontSize: '25px'}),
           });
+          this.gamestate.elements[i][j].rect.setInteractive();
+          this.gamestate.elements[i][j].rect.on('pointerdown', (element: any) => this.selection(element, j, i));
         } else {
           this.gamestate.elements[i].push({
             rect: this.add.rectangle(x, y, 50, 30, 0x999999), 
