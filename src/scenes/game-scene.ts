@@ -4,14 +4,12 @@ import { Constants } from "../config";
 export class GameScene extends Phaser.Scene {
   private gameboard = new GameCode;
   private gamestate: {
-    selPos1: {x: number, y: number},
-    selPos2: {x: number, y: number},
+    selPos: {x: number, y: number},
     elements: Array<Array<{rect: Phaser.GameObjects.Rectangle, number: Phaser.GameObjects.Text}>>,
     scrollHelper: any,
     cursors: any,
   } = {
-    selPos1: {x: null, y: null},
-    selPos2: {x: null, y: null},
+    selPos: null,
     elements: [],
     scrollHelper: null,
     cursors: null,
@@ -39,7 +37,19 @@ export class GameScene extends Phaser.Scene {
   }
 
   private selection(element: any, x: number, y: number) {
-    console.log('x: ' + x + '; y: ' + y);
+    // future feature TODO's:
+    // Custom Color Support
+    // Neighbor Highlighting
+    if(!this.gamestate.selPos) {
+      this.gamestate.selPos = {x: x, y: y};
+      this.gamestate.elements[y][x].number.setColor('#0000ff');
+      return;
+    }
+    if(this.gamestate.selPos.x == x && this.gamestate.selPos.y == y) {
+      this.gamestate.selPos = null;
+      this.gamestate.elements[y][x].number.setColor('#00ff00');
+      return;
+    }
   }
 
   private draw(): void {
@@ -55,7 +65,7 @@ export class GameScene extends Phaser.Scene {
             number: this.add.text(x - 7, y - 12, this.gameboard.board[i][j].value.toString(), { fontFamily: 'monospace', color: '#00ff00', fontSize: '25px'}),
           });
           this.gamestate.elements[i][j].rect.setInteractive();
-          this.gamestate.elements[i][j].rect.on('pointerdown', (element: any) => this.selection(element, j, i));
+          this.gamestate.elements[i][j].rect.on('pointerup', (element: any) => this.selection(element, j, i));
         } else {
           this.gamestate.elements[i].push({
             rect: this.add.rectangle(x, y, 50, 30, 0x999999), 
