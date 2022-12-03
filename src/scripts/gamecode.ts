@@ -408,6 +408,18 @@ export class GameCode {
         ]
     }
 
+    public getBoardSizeY(): number {
+        return this.board.length
+    }
+
+    public getBoardSizeX(index: number): number {
+        return this.board[index].length;
+    }
+
+    public getValue(x: number, y: number): {visible: boolean, value: number} {
+        return this.board[y][x];
+    }
+
     public cross(e1: {x: number, y:number}, e2: {x: number, y:number}) {
         this.board[e1.y][e1.x].visible = false;
         this.board[e2.y][e2.x].visible = false;

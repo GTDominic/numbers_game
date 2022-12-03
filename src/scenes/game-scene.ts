@@ -5,7 +5,7 @@ export class GameScene extends Phaser.Scene {
   private gameboard = new GameCode;
   private gamestate: {
     selPos: {x: number, y: number},
-    elements: Array<Array<{rect: Phaser.GameObjects.Rectangle, number: Phaser.GameObjects.Text}>>,
+    elements: Array<Array<{val: {value: number, visible: boolean}, rect: Phaser.GameObjects.Rectangle, number: Phaser.GameObjects.Text}>>,
     scrollHelper: any,
     cursors: any,
   } = {
@@ -54,11 +54,12 @@ export class GameScene extends Phaser.Scene {
     else this.gamestate.scrollHelper.setVelocityY(0);
   }
 
-  private selection(element: any, x: number, y: number): void {
+  private selection(x: number, y: number): void {
     // future feature TODO's:
     // Custom Color Support
     // Neighbor Highlighting
     // Call draw function only if necessary
+    if(!this.gamestate.elements[y][x].val.visible) return;
     if(!this.gamestate.selPos) {
       this.gamestate.selPos = {x: x, y: y};
       this.gamestate.elements[y][x].number.setColor('#0000ff');
@@ -75,7 +76,44 @@ export class GameScene extends Phaser.Scene {
   }
 
   private draw(): void {
-    
+    let ylength: number;
+    let xlength: number;
+    if(this.gamestate.elements.length < this.gameboard.getBoardSizeY()) ylength = this.gameboard.getBoardSizeY();
+    else ylength = this.gamestate.elements.length;
+    for(let i = 0; i < ylength; i++) {
+      if(this.gamestate.elements[i].length < this.gameboard.getBoardSizeX(i)) xlength = this.gameboard.getBoardSizeX(i);
+      else xlength = this.gamestate.elements[i].length;
+      for(let j = 0; j < xlength; j++) {
+        if(!this.gamestate.elements[i][j]) {
+          let x = j * 50 + 25;
+          let y = i * 30 + 15;
+          let properties: {bgColor: number, tColor: string};
+          if(this.gameboard.getValue(j, i).visible) properties = {bgColor: 0x000000, tColor: '#00ff00'};
+          else properties = {bgColor: 0x999999, tColor: '#000000'};
+          this.gamestate.elements[i].push({
+            val: this.gameboard.getValue(j, i),
+            rect: this.add.rectangle(x, y, 50, 30, properties.bgColor),
+            number: this.add.text(x - 7, y - 12 , this.gameboard.getValue(j, i).value.toString(), { fontFamily: 'monospace', color: properties.tColor, fontSize: '25px'}),
+          });
+          this.gamestate.elements[i][j].rect.depth = 1;
+          this.gamestate.elements[i][j].number.depth = 2;
+          this.gamestate.elements[i][j].rect.setInteractive();
+          this.gamestate.elements[i][j].rect.on('pointerup', () => this.selection(j, i));
+        } else if(!this.gameboard.getValue(j, i)) {
+          this.gamestate.elements[i][j].number.destroy();
+          this.gamestate.elements[i][j].rect.destroy();
+        } else if(this.gameboard.getValue(j, i) != this.gamestate.elements[i][j].val) {
+          let properties: {bgColor: number, tColor: string};
+          if(this.gameboard.getValue(j, i).visible) properties = {bgColor: 0x000000, tColor: '#00ff00'};
+          else properties = {bgColor: 0x999999, tColor: '#000000'};
+          this.gamestate.elements[i][j].rect.fillColor = properties.bgColor;
+          this.gamestate.elements[i][j].number.setColor(properties.tColor);
+          this.gamestate.elements[i][j].number.setText(this.gameboard.getValue(j, i).value.toString());
+        }
+      }
+    }
+    this.cameras.main.setBounds(0, 0, Constants.width, this.gameboard.board.length * 30);
+    this.physics.world.setBounds(0, Constants.height / 2, Constants.width, this.gameboard.board.length * 30 - Constants.height);
   }
 
   private draw_old(): void {
@@ -93,15 +131,17 @@ export class GameScene extends Phaser.Scene {
         let y = i * 30 + 15;
         if (this.gameboard.board[i][j].visible) {
           this.gamestate.elements[i].push({
+            val: this.gameboard.board[j][i],
             rect: this.add.rectangle(x, y, 50, 30, 0x000000), 
             number: this.add.text(x - 7, y - 12, this.gameboard.board[i][j].value.toString(), { fontFamily: 'monospace', color: '#00ff00', fontSize: '25px'}),
           });
           this.gamestate.elements[i][j].rect.depth = 1;
           this.gamestate.elements[i][j].number.depth = 2;
           this.gamestate.elements[i][j].rect.setInteractive();
-          this.gamestate.elements[i][j].rect.on('pointerup', (element: any) => this.selection(element, j, i));
+          this.gamestate.elements[i][j].rect.on('pointerup', () => this.selection(j, i));
         } else {
           this.gamestate.elements[i].push({
+            val: this.gameboard.board[j][i],
             rect: this.add.rectangle(x, y, 50, 30, 0x999999), 
             number: this.add.text(x - 7, y - 12, this.gameboard.board[i][j].value.toString(), { fontFamily: 'monospace', color: '#000000', fontSize: '25px'}),
           });
