@@ -5,7 +5,7 @@ export class GameScene extends Phaser.Scene {
   private gameboard = new GameCode;
   private gamestate: {
     selPos: {x: number, y: number},
-    elements: Array<Array<{rect: Phaser.GameObjects.Rectangle, number: Phaser.GameObjects.Text}>>,
+    elements: Array<Array<{val: {value: number, visible: boolean}, rect: Phaser.GameObjects.Rectangle, number: Phaser.GameObjects.Text}>>,
     scrollHelper: any,
     cursors: any,
   } = {
@@ -54,10 +54,12 @@ export class GameScene extends Phaser.Scene {
     else this.gamestate.scrollHelper.setVelocityY(0);
   }
 
-  private selection(element: any, x: number, y: number): void {
+  private selection(x: number, y: number): void {
     // future feature TODO's:
     // Custom Color Support
     // Neighbor Highlighting
+    // Call draw function only if necessary
+    if(!this.gamestate.elements[y][x].val.visible) return;
     if(!this.gamestate.selPos) {
       this.gamestate.selPos = {x: x, y: y};
       this.gamestate.elements[y][x].number.setColor('#0000ff');
@@ -74,45 +76,80 @@ export class GameScene extends Phaser.Scene {
   }
 
   private draw(): void {
-    for(let i = 0; i < this.gamestate.elements.length; i++) {
+    // Used to store the length of the displayed board before appending
+    // Gets updated if rows get deleted
+    let lengthT = this.gamestate.elements.length;
+    if(this.gameboard.getBoardSizeY() > this.gamestate.elements.length) {
+      for(let i = this.gamestate.elements.length; i < this.gameboard.getBoardSizeY(); i++) {
+        this.gamestate.elements.push([]);
+        for(let j = 0; j < this.gameboard.getBoardSizeX(i); j++) this.appendElement(j, i);
+      }
+      this.cameras.main.setBounds(0, 0, Constants.width, this.gamestate.elements.length * 30 + Constants.menuHeight);
+      this.physics.world.setBounds(0, Constants.height / 2, Constants.width, this.gamestate.elements.length * 30 - Constants.height + Constants.menuHeight);
+    }
+    if(this.gameboard.getBoardSizeY() < this.gamestate.elements.length) {
+      for(let i = this.gameboard.getBoardSizeY(); i < this.gamestate.elements.length; i++) {
+        for(let j = 0; j < this.gamestate.elements[i].length; j++) this.deleteElement(j, i);
+      }
+      lengthT = this.gamestate.elements.length;
+      this.cameras.main.setBounds(0, 0, Constants.width, this.gamestate.elements.length * 30 + Constants.menuHeight);
+      this.physics.world.setBounds(0, Constants.height / 2, Constants.width, this.gamestate.elements.length * 30 - Constants.height + Constants.menuHeight);
+    }
+    if(lengthT == 0) return;
+    if(this.gameboard.getBoardSizeX(lengthT - 1) > this.gamestate.elements[lengthT - 1].length) {
+      for(let j = this.gamestate.elements[lengthT - 1].length; j < this.gameboard.getBoardSizeX(lengthT - 1); j++) this.appendElement(j, lengthT - 1);
+    }
+    if(this.gameboard.getBoardSizeX(lengthT - 1) < this.gamestate.elements[lengthT - 1].length) {
+      for(let j = this.gameboard.getBoardSizeX(lengthT - 1); j < this.gamestate.elements[lengthT - 1].length; j++) this.deleteElement(j, lengthT - 1);
+    }
+    for(let i = 0; i < lengthT; i++) {
       for(let j = 0; j < this.gamestate.elements[i].length; j++) {
-        this.gamestate.elements[i][j].number.destroy();
-        this.gamestate.elements[i][j].rect.destroy();
+        if(this.gamestate.elements[i][j].val != this.gameboard.getValue(j, i)) this.updateElement(j, i);
       }
     }
-    this.gamestate.elements = [];
-    for(let i = 0; i < this.gameboard.board.length; i++) {
-      this.gamestate.elements.push([]);
-      for(let j = 0; j < this.gameboard.board[i].length; j++) {
-        let x = j * 50 + 25;
-        let y = i * 30 + 15;
-        if (this.gameboard.board[i][j].visible) {
-          this.gamestate.elements[i].push({
-            rect: this.add.rectangle(x, y, 50, 30, 0x000000), 
-            number: this.add.text(x - 7, y - 12, this.gameboard.board[i][j].value.toString(), { fontFamily: 'monospace', color: '#00ff00', fontSize: '25px'}),
-          });
-          this.gamestate.elements[i][j].rect.depth = 1;
-          this.gamestate.elements[i][j].number.depth = 2;
-          this.gamestate.elements[i][j].rect.setInteractive();
-          this.gamestate.elements[i][j].rect.on('pointerup', (element: any) => this.selection(element, j, i));
-        } else {
-          this.gamestate.elements[i].push({
-            rect: this.add.rectangle(x, y, 50, 30, 0x999999), 
-            number: this.add.text(x - 7, y - 12, this.gameboard.board[i][j].value.toString(), { fontFamily: 'monospace', color: '#000000', fontSize: '25px'}),
-          });
-          this.gamestate.elements[i][j].rect.depth = 1;
-          this.gamestate.elements[i][j].number.depth = 2;
-        }
-      }
-    }
-    this.cameras.main.setBounds(0, 0, Constants.width, this.gameboard.board.length * 30);
-    this.physics.world.setBounds(0, Constants.height / 2, Constants.width, this.gameboard.board.length * 30 - Constants.height);
   }
 
   private createMenu(): void {
-    this.menu.bar = this.add.rectangle(0, Constants.height - 50, Constants.width, 50, 0x000000);
+    this.menu.bar = this.add.rectangle(Constants.width / 2, Constants.height - Constants.menuHeight / 2, Constants.width, Constants.menuHeight, 0x000000);
     this.menu.bar.setScrollFactor(0);
-    this.menu.bar.setScale(2);
+    // this.menu.bar.setScale(2);
     this.menu.bar.depth = 10;
+  }
+
+  private appendElement(x: number, y: number): void {
+    let xPos = x * 50 + 25;
+    let yPos = y * 30 + 15;
+    let properties = this.getProperties(x, y);
+    this.gamestate.elements[y].push({
+      val: {
+        value: this.gameboard.getValue(x, y).value,
+        visible: this.gameboard.getValue(x, y).visible,
+      },
+      rect: this.add.rectangle(xPos, yPos, 50, 30, properties.bgColor),
+      number: this.add.text(xPos - 7, yPos - 12 , this.gameboard.getValue(x, y).value.toString(), { fontFamily: 'monospace', color: properties.tColor, fontSize: '25px'}),
+    });
+    this.gamestate.elements[y][x].rect.depth = 1;
+    this.gamestate.elements[y][x].number.depth = 2;
+    this.gamestate.elements[y][x].rect.setInteractive();
+    this.gamestate.elements[y][x].rect.on('pointerup', () => this.selection(x, y));
+  }
+
+  private deleteElement(x: number, y: number): void {
+    this.gamestate.elements[y][x].number.destroy();
+    this.gamestate.elements[y][x].rect.destroy();
+  }
+
+  private updateElement(x: number, y: number): void {
+    let properties = this.getProperties(x, y);
+    this.gamestate.elements[y][x].rect.fillColor = properties.bgColor;
+    this.gamestate.elements[y][x].number.setColor(properties.tColor);
+    this.gamestate.elements[y][x].number.setText(this.gameboard.getValue(x, y).value.toString());
+    this.gamestate.elements[y][x].val.value = this.gameboard.getValue(x, y).value;
+    this.gamestate.elements[y][x].val.visible = this.gameboard.getValue(x, y). visible;
+  }
+
+  private getProperties(x: number, y: number): {bgColor: number, tColor: string} {
+    if(this.gameboard.getValue(x, y).visible) return {bgColor: 0x000000, tColor: '#00ff00'};
+    return {bgColor: 0x999999, tColor: '#000000'};
   }
 }
