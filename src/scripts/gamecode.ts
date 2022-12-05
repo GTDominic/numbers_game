@@ -1,6 +1,6 @@
 export class GameCode {
     // 9xX
-    public board: Array<Array<{visible: boolean, value: number}>>;
+    private board: Array<Array<{visible: boolean, value: number}>>;
 
     constructor() {
         this.board = [
@@ -420,8 +420,50 @@ export class GameCode {
         return this.board[y][x];
     }
 
+    public findNeighbours(x: number, y: number): {
+        right: {x: number, y: number}, 
+        left: {x: number, y: number}, 
+        top: {x: number, y: number}, 
+        bottom: {x: number, y: number}
+    } {
+        return {
+            right: this.rekRightNeighbour(x + 1, y), 
+            left: this.rekLeftNeighbour(x - 1, y), 
+            top: this.rekTopNeighbour(x, y - 1), 
+            bottom: this.rekBottomNeighbour(x, y + 1)
+        };
+    }
+
     public cross(e1: {x: number, y:number}, e2: {x: number, y:number}) {
         this.board[e1.y][e1.x].visible = false;
         this.board[e2.y][e2.x].visible = false;
+    }
+
+    private rekLeftNeighbour(x: number, y: number): {x: number, y: number} {
+        if (y < 0) return null;
+        if (x < 0) return this.rekLeftNeighbour(8, y - 1);
+        if (!this.board[y][x].visible) return this.rekLeftNeighbour(x - 1, y);
+        return {x: x, y: y};
+    }
+
+    private rekRightNeighbour(x: number, y: number): {x: number, y: number} {
+        if (y >= this.board.length) return null;
+        if (y == this.board.length - 1 && x >= this.board[y].length) return null;
+        if (x > 8) return this.rekRightNeighbour(0, y + 1);
+        if (!this.board[y][x].visible) return this.rekRightNeighbour(x + 1, y);
+        return {x: x, y: y};
+    }
+
+    private rekTopNeighbour(x: number, y: number): {x: number, y: number} {
+        if (y < 0) return null;
+        if (!this.board[y][x].visible) return this.rekTopNeighbour(x, y - 1);
+        return {x: x, y: y};
+    }
+
+    private rekBottomNeighbour(x: number, y: number): {x: number, y: number} {
+        if (y >= this.board.length) return null;
+        if (y == this.board.length - 1 && x >= this.board[y].length) return null;
+        if (!this.board[y][x].visible) return this.rekBottomNeighbour(x, y + 1);
+        return {x: x, y: y};
     }
 }
