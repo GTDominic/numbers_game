@@ -20,7 +20,7 @@ export class GameScene extends Phaser.Scene {
       check: {rect: Phaser.GameObjects.Rectangle, text: Phaser.GameObjects.Text, symbol: Phaser.GameObjects.Sprite},
       undo: {rect: Phaser.GameObjects.Rectangle, text: Phaser.GameObjects.Text, symbol: Phaser.GameObjects.Sprite},
       help: {rect: Phaser.GameObjects.Rectangle, text: Phaser.GameObjects.Text, symbol: Phaser.GameObjects.Sprite},
-      cross: {rect: Phaser.GameObjects.Rectangle, text: Phaser.GameObjects.Text, symbol: Phaser.GameObjects.Sprite},
+      restart: {rect: Phaser.GameObjects.Rectangle, text: Phaser.GameObjects.Text, symbol: Phaser.GameObjects.Sprite},
     },
   } = {
     bar: null,
@@ -28,7 +28,7 @@ export class GameScene extends Phaser.Scene {
       check: {rect: null, text: null, symbol: null},
       undo: {rect: null, text: null, symbol: null},
       help: {rect: null, text: null, symbol: null},
-      cross: {rect: null, text: null, symbol: null},
+      restart: {rect: null, text: null, symbol: null},
     },
   }
 
@@ -110,10 +110,75 @@ export class GameScene extends Phaser.Scene {
   }
 
   private createMenu(): void {
+    let buttonwidth = Constants.width / 4;
     this.menu.bar = this.add.rectangle(Constants.width / 2, Constants.height - Constants.menuHeight / 2, Constants.width, Constants.menuHeight, 0x000000);
     this.menu.bar.setScrollFactor(0);
-    // this.menu.bar.setScale(2);
     this.menu.bar.depth = 10;
+
+    this.menu.buttons.check.rect = this.add.rectangle(
+      buttonwidth / 2 + buttonwidth * 0, 
+      Constants.height - Constants.menuHeight / 2, 
+      buttonwidth, 
+      Constants.menuHeight, 
+      0x111111
+    );
+    this.menu.buttons.check.rect.depth = 11;
+    this.menu.buttons.check.rect.strokeColor = 0xffffff;
+    this.menu.buttons.check.rect.isStroked = true;
+    this.menu.buttons.check.rect.lineWidth = 5;
+    this.menu.buttons.undo.rect = this.add.rectangle(
+      buttonwidth / 2 + buttonwidth * 1, 
+      Constants.height - Constants.menuHeight / 2, 
+      buttonwidth, 
+      Constants.menuHeight, 
+      0x111111
+    );
+    this.menu.buttons.undo.rect.depth = 11;
+    this.menu.buttons.undo.rect.strokeColor = 0xffffff;
+    this.menu.buttons.undo.rect.isStroked = true;
+    this.menu.buttons.undo.rect.lineWidth = 5;
+    this.menu.buttons.help.rect = this.add.rectangle(
+      buttonwidth / 2 + buttonwidth * 2, 
+      Constants.height - Constants.menuHeight / 2, 
+      buttonwidth, 
+      Constants.menuHeight, 
+      0x111111
+    );
+    this.menu.buttons.help.rect.depth = 11;
+    this.menu.buttons.help.rect.strokeColor = 0xffffff;
+    this.menu.buttons.help.rect.isStroked = true;
+    this.menu.buttons.help.rect.lineWidth = 5;
+    this.menu.buttons.restart.rect = this.add.rectangle(
+      buttonwidth / 2 + buttonwidth * 3, 
+      Constants.height - Constants.menuHeight / 2, 
+      buttonwidth, 
+      Constants.menuHeight, 
+      0x111111
+    );
+    this.menu.buttons.restart.rect.depth = 11;
+    this.menu.buttons.restart.rect.strokeColor = 0xffffff;
+    this.menu.buttons.restart.rect.isStroked = true;
+    this.menu.buttons.restart.rect.lineWidth = 5;
+
+    this.menu.buttons.check.text = this.add.text(
+      buttonwidth * 0 + 10, Constants.height - Constants.menuHeight + 10, "Check", { fontFamily: 'monospace', fontSize: '15px'}
+    );
+    this.menu.buttons.check.text.depth = 12;
+    this.menu.buttons.undo.text = this.add.text(
+      buttonwidth * 1 + 10, Constants.height - Constants.menuHeight + 10, "Undo", { fontFamily: 'monospace', fontSize: '15px'}
+    );
+    this.menu.buttons.undo.text.depth = 12;
+    this.menu.buttons.help.text = this.add.text(
+      buttonwidth * 2 + 10, Constants.height - Constants.menuHeight + 10, "Help", { fontFamily: 'monospace', fontSize: '15px'}
+    );
+    this.menu.buttons.help.text.depth = 12;
+    this.menu.buttons.restart.text = this.add.text(
+      buttonwidth * 3 + 10, Constants.height - Constants.menuHeight + 10, "Restart", { fontFamily: 'monospace', fontSize: '15px'}
+    );
+    this.menu.buttons.restart.text.depth = 12;
+
+    // TODO:
+    // Functions on button press
   }
 
   private appendElement(x: number, y: number): void {
