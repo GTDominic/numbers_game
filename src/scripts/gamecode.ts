@@ -6,396 +6,6 @@ export class GameCode {
         this.board = [
             [
                 {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-            ], [
-                {visible: false, value: 1},
-                {visible: true, value: 2},
-                {visible: false, value: 3},
-                {visible: true, value: 4},
-                {visible: false, value: 5},
-                {visible: true, value: 6},
-                {visible: false, value: 7},
-                {visible: true, value: 8},
-                {visible: false, value: 9},
-            ], [
-                {visible: true, value: 1},
-                {visible: false, value: 2},
-                {visible: true, value: 3},
-                {visible: false, value: 4},
-                {visible: true, value: 5},
-                {visible: false, value: 6},
-                {visible: true, value: 7},
-                {visible: false, value: 8},
-                {visible: true, value: 9},
-            ], [
-                {visible: false, value: 1},
-                {visible: true, value: 2},
-                {visible: false, value: 3},
-                {visible: true, value: 4},
-                {visible: false, value: 5},
-                {visible: true, value: 6},
-                {visible: false, value: 7},
-                {visible: true, value: 8},
-                {visible: false, value: 9},
-            ], [
-                {visible: true, value: 1},
-                {visible: false, value: 2},
-                {visible: true, value: 3},
-                {visible: false, value: 4},
-                {visible: true, value: 5},
-                {visible: false, value: 6},
-                {visible: true, value: 7},
-                {visible: false, value: 8},
-                {visible: true, value: 9},
-            ], [
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-            ], [
-                {visible: false, value: 1},
-                {visible: true, value: 2},
-                {visible: false, value: 3},
-                {visible: true, value: 4},
-                {visible: false, value: 5},
-                {visible: true, value: 6},
-                {visible: false, value: 7},
-                {visible: true, value: 8},
-                {visible: false, value: 9},
-            ], [
-                {visible: true, value: 1},
-                {visible: false, value: 2},
-                {visible: true, value: 3},
-                {visible: false, value: 4},
-                {visible: true, value: 5},
-                {visible: false, value: 6},
-                {visible: true, value: 7},
-                {visible: false, value: 8},
-                {visible: true, value: 9},
-            ], [
-                {visible: false, value: 1},
-                {visible: true, value: 2},
-                {visible: false, value: 3},
-                {visible: true, value: 4},
-                {visible: false, value: 5},
-                {visible: true, value: 6},
-                {visible: false, value: 7},
-                {visible: true, value: 8},
-                {visible: false, value: 9},
-            ], [
-                {visible: true, value: 1},
-                {visible: false, value: 2},
-                {visible: true, value: 3},
-                {visible: false, value: 4},
-                {visible: true, value: 5},
-                {visible: false, value: 6},
-                {visible: true, value: 7},
-                {visible: false, value: 8},
-                {visible: true, value: 9},
-            ], [
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-            ], [
-                {visible: false, value: 1},
-                {visible: true, value: 2},
-                {visible: false, value: 3},
-                {visible: true, value: 4},
-                {visible: false, value: 5},
-                {visible: true, value: 6},
-                {visible: false, value: 7},
-                {visible: true, value: 8},
-                {visible: false, value: 9},
-            ], [
-                {visible: true, value: 1},
-                {visible: false, value: 2},
-                {visible: true, value: 3},
-                {visible: false, value: 4},
-                {visible: true, value: 5},
-                {visible: false, value: 6},
-                {visible: true, value: 7},
-                {visible: false, value: 8},
-                {visible: true, value: 9},
-            ], [
-                {visible: false, value: 1},
-                {visible: true, value: 2},
-                {visible: false, value: 3},
-                {visible: true, value: 4},
-                {visible: false, value: 5},
-                {visible: true, value: 6},
-                {visible: false, value: 7},
-                {visible: true, value: 8},
-                {visible: false, value: 9},
-            ], [
-                {visible: true, value: 1},
-                {visible: false, value: 2},
-                {visible: true, value: 3},
-                {visible: false, value: 4},
-                {visible: true, value: 5},
-                {visible: false, value: 6},
-                {visible: true, value: 7},
-                {visible: false, value: 8},
-                {visible: true, value: 9},
-            ], [
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-            ], [
-                {visible: false, value: 1},
-                {visible: true, value: 2},
-                {visible: false, value: 3},
-                {visible: true, value: 4},
-                {visible: false, value: 5},
-                {visible: true, value: 6},
-                {visible: false, value: 7},
-                {visible: true, value: 8},
-                {visible: false, value: 9},
-            ], [
-                {visible: true, value: 1},
-                {visible: false, value: 2},
-                {visible: true, value: 3},
-                {visible: false, value: 4},
-                {visible: true, value: 5},
-                {visible: false, value: 6},
-                {visible: true, value: 7},
-                {visible: false, value: 8},
-                {visible: true, value: 9},
-            ], [
-                {visible: false, value: 1},
-                {visible: true, value: 2},
-                {visible: false, value: 3},
-                {visible: true, value: 4},
-                {visible: false, value: 5},
-                {visible: true, value: 6},
-                {visible: false, value: 7},
-                {visible: true, value: 8},
-                {visible: false, value: 9},
-            ], [
-                {visible: true, value: 1},
-                {visible: false, value: 2},
-                {visible: true, value: 3},
-                {visible: false, value: 4},
-                {visible: true, value: 5},
-                {visible: false, value: 6},
-                {visible: true, value: 7},
-                {visible: false, value: 8},
-                {visible: true, value: 9},
-            ], [
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-            ], [
-                {visible: false, value: 1},
-                {visible: true, value: 2},
-                {visible: false, value: 3},
-                {visible: true, value: 4},
-                {visible: false, value: 5},
-                {visible: true, value: 6},
-                {visible: false, value: 7},
-                {visible: true, value: 8},
-                {visible: false, value: 9},
-            ], [
-                {visible: true, value: 1},
-                {visible: false, value: 2},
-                {visible: true, value: 3},
-                {visible: false, value: 4},
-                {visible: true, value: 5},
-                {visible: false, value: 6},
-                {visible: true, value: 7},
-                {visible: false, value: 8},
-                {visible: true, value: 9},
-            ], [
-                {visible: false, value: 1},
-                {visible: true, value: 2},
-                {visible: false, value: 3},
-                {visible: true, value: 4},
-                {visible: false, value: 5},
-                {visible: true, value: 6},
-                {visible: false, value: 7},
-                {visible: true, value: 8},
-                {visible: false, value: 9},
-            ], [
-                {visible: true, value: 1},
-                {visible: false, value: 2},
-                {visible: true, value: 3},
-                {visible: false, value: 4},
-                {visible: true, value: 5},
-                {visible: false, value: 6},
-                {visible: true, value: 7},
-                {visible: false, value: 8},
-                {visible: true, value: 9},
-            ], [
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-            ], [
-                {visible: false, value: 1},
-                {visible: true, value: 2},
-                {visible: false, value: 3},
-                {visible: true, value: 4},
-                {visible: false, value: 5},
-                {visible: true, value: 6},
-                {visible: false, value: 7},
-                {visible: true, value: 8},
-                {visible: false, value: 9},
-            ], [
-                {visible: true, value: 1},
-                {visible: false, value: 2},
-                {visible: true, value: 3},
-                {visible: false, value: 4},
-                {visible: true, value: 5},
-                {visible: false, value: 6},
-                {visible: true, value: 7},
-                {visible: false, value: 8},
-                {visible: true, value: 9},
-            ], [
-                {visible: false, value: 1},
-                {visible: true, value: 2},
-                {visible: false, value: 3},
-                {visible: true, value: 4},
-                {visible: false, value: 5},
-                {visible: true, value: 6},
-                {visible: false, value: 7},
-                {visible: true, value: 8},
-                {visible: false, value: 9},
-            ], [
-                {visible: true, value: 1},
-                {visible: false, value: 2},
-                {visible: true, value: 3},
-                {visible: false, value: 4},
-                {visible: true, value: 5},
-                {visible: false, value: 6},
-                {visible: true, value: 7},
-                {visible: false, value: 8},
-                {visible: true, value: 9},
-            ], [
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-            ], [
-                {visible: false, value: 1},
-                {visible: true, value: 2},
-                {visible: false, value: 3},
-                {visible: true, value: 4},
-                {visible: false, value: 5},
-                {visible: true, value: 6},
-                {visible: false, value: 7},
-                {visible: true, value: 8},
-                {visible: false, value: 9},
-            ], [
-                {visible: true, value: 1},
-                {visible: false, value: 2},
-                {visible: true, value: 3},
-                {visible: false, value: 4},
-                {visible: true, value: 5},
-                {visible: false, value: 6},
-                {visible: true, value: 7},
-                {visible: false, value: 8},
-                {visible: true, value: 9},
-            ], [
-                {visible: false, value: 1},
-                {visible: true, value: 2},
-                {visible: false, value: 3},
-                {visible: true, value: 4},
-                {visible: false, value: 5},
-                {visible: true, value: 6},
-                {visible: false, value: 7},
-                {visible: true, value: 8},
-                {visible: false, value: 9},
-            ], [
-                {visible: true, value: 1},
-                {visible: false, value: 2},
-                {visible: true, value: 3},
-                {visible: false, value: 4},
-                {visible: true, value: 5},
-                {visible: false, value: 6},
-                {visible: true, value: 7},
-                {visible: false, value: 8},
-                {visible: true, value: 9},
-            ], [
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-                {visible: false, value: 1},
-                {visible: true, value: 1},
-            ], [
-                {visible: false, value: 1},
-                {visible: true, value: 2},
-                {visible: false, value: 3},
-                {visible: true, value: 4},
-                {visible: false, value: 5},
-                {visible: true, value: 6},
-                {visible: false, value: 7},
-                {visible: true, value: 8},
-                {visible: false, value: 9},
-            ], [
-                {visible: true, value: 1},
-                {visible: false, value: 2},
-                {visible: true, value: 3},
-                {visible: false, value: 4},
-                {visible: true, value: 5},
-                {visible: false, value: 6},
-                {visible: true, value: 7},
-                {visible: false, value: 8},
-                {visible: true, value: 9},
-            ], [
-                {visible: false, value: 1},
-                {visible: true, value: 2},
-                {visible: false, value: 3},
-                {visible: true, value: 4},
-                {visible: false, value: 5},
-                {visible: true, value: 6},
-                {visible: false, value: 7},
-                {visible: true, value: 8},
-                {visible: false, value: 9},
-            ], [
-                {visible: true, value: 1},
                 {visible: false, value: 2},
                 {visible: true, value: 3},
                 {visible: false, value: 4},
@@ -420,6 +30,16 @@ export class GameCode {
         return this.board[y][x];
     }
 
+    public check(): void {
+        let numbers: number[] = [];
+        for(let i = 0; i < this.board.length; i++) {
+            for(let j = 0; j < this.board[i].length; j++) {
+                if(this.board[i][j].visible) numbers.push(this.board[i][j].value);
+            }
+        }
+        this.appendArray(numbers);
+    }
+
     public findNeighbours(x: number, y: number): {
         right: {x: number, y: number}, 
         left: {x: number, y: number}, 
@@ -434,7 +54,7 @@ export class GameCode {
         };
     }
 
-    public cross(e1: {x: number, y:number}, e2: {x: number, y:number}) {
+    public cross(e1: {x: number, y:number}, e2: {x: number, y:number}):void {
         if(e1.x === e2.x) {
             if(e1.y > e2.y) {
                 let check = this.rekTopNeighbour(e1.x, e1.y - 1);
@@ -455,6 +75,22 @@ export class GameCode {
         if(this.board[e1.y][e1.x].value !== this.board[e2.y][e2.x].value && this.board[e1.y][e1.x].value + this.board[e2.y][e2.x].value !== 10) return;
         this.board[e1.y][e1.x].visible = false;
         this.board[e2.y][e2.x].visible = false;
+    }
+
+    private appendArray(numbers: number[]):void {
+        if(this.board.length !== 0) {
+            if(this.board[this.board.length - 1].length < 9) {
+                for(let i = this.board[this.board.length - 1].length - 1; i < 8; i++) {
+                    if(numbers.length > 0) this.board[this.board.length - 1].push({visible: true, value: numbers.shift()});
+                }
+            }
+        }
+        while(numbers.length > 1) {
+            this.board.push([]);
+            for(let i = 0; i < 9; i++) {
+                if(numbers.length > 0) this.board[this.board.length - 1].push({visible: true, value: numbers.shift()});
+            }
+        }
     }
 
     private rekLeftNeighbour(x: number, y: number): {x: number, y: number} {

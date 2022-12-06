@@ -77,6 +77,11 @@ export class GameScene extends Phaser.Scene {
     this.draw();
   }
 
+  private check(): void {
+    this.gameboard.check();
+    this.draw();
+  }
+
   private draw(): void {
     // Used to store the length of the displayed board before appending
     // Gets updated if rows get deleted
@@ -208,6 +213,8 @@ export class GameScene extends Phaser.Scene {
 
     // TODO:
     // Functions on button press
+    this.menu.buttons.check.rect.setInteractive();
+    this.menu.buttons.check.rect.on('pointerup', () => this.check());
   }
 
   private appendElement(x: number, y: number): void {
