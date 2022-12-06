@@ -435,6 +435,24 @@ export class GameCode {
     }
 
     public cross(e1: {x: number, y:number}, e2: {x: number, y:number}) {
+        if(e1.x === e2.x) {
+            if(e1.y > e2.y) {
+                let check = this.rekTopNeighbour(e1.x, e1.y - 1);
+                if(check.x !== e2.x || check.y !== e2.y) return;
+            } else {
+                let check = this.rekBottomNeighbour(e1.x, e1.y + 1);
+                if(check.x !== e2.x || check.y !== e2.y) return;
+            }
+        } else {
+            if(e1.y > e2.y || (e1.x > e2.x && e1.y === e2.y)) {
+                let check = this.rekLeftNeighbour(e1.x - 1, e1.y);
+                if(check.x !== e2.x || check.y !== e2.y) return;
+            } else {
+                let check = this.rekRightNeighbour(e1.x + 1, e1.y);
+                if(check.x !== e2.x || check.y !== e2.y) return;
+            }
+        }
+        if(this.board[e1.y][e1.x].value !== this.board[e2.y][e2.x].value && this.board[e1.y][e1.x].value + this.board[e2.y][e2.x].value !== 10) return;
         this.board[e1.y][e1.x].visible = false;
         this.board[e2.y][e2.x].visible = false;
     }
