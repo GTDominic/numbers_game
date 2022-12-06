@@ -21,6 +21,7 @@ export class GameScene extends Phaser.Scene {
       undo: {rect: Phaser.GameObjects.Rectangle, text: Phaser.GameObjects.Text, symbol: Phaser.GameObjects.Sprite},
       help: {rect: Phaser.GameObjects.Rectangle, text: Phaser.GameObjects.Text, symbol: Phaser.GameObjects.Sprite},
       restart: {rect: Phaser.GameObjects.Rectangle, text: Phaser.GameObjects.Text, symbol: Phaser.GameObjects.Sprite},
+      rowClear: {rect: Phaser.GameObjects.Rectangle, text: Phaser.GameObjects.Text, symbol: Phaser.GameObjects.Sprite},
     },
   } = {
     bar: null,
@@ -29,6 +30,7 @@ export class GameScene extends Phaser.Scene {
       undo: {rect: null, text: null, symbol: null},
       help: {rect: null, text: null, symbol: null},
       restart: {rect: null, text: null, symbol: null},
+      rowClear: {rect: null, text: null, symbol: null},
     },
   }
 
@@ -110,7 +112,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private createMenu(): void {
-    let buttonwidth = Constants.width / 4;
+    let buttonwidth = Constants.width / 5;
     this.menu.bar = this.add.rectangle(Constants.width / 2, Constants.height - Constants.menuHeight / 2, Constants.width, Constants.menuHeight, 0x000000);
     this.menu.bar.setScrollFactor(0);
     this.menu.bar.depth = 10;
@@ -159,6 +161,23 @@ export class GameScene extends Phaser.Scene {
     this.menu.buttons.restart.rect.strokeColor = 0xffffff;
     this.menu.buttons.restart.rect.isStroked = true;
     this.menu.buttons.restart.rect.lineWidth = 5;
+    this.menu.buttons.rowClear.rect = this.add.rectangle(
+      buttonwidth / 2 + buttonwidth * 4, 
+      Constants.height - Constants.menuHeight / 2, 
+      buttonwidth, 
+      Constants.menuHeight, 
+      0x111111
+    );
+    this.menu.buttons.rowClear.rect.depth = 11;
+    this.menu.buttons.rowClear.rect.strokeColor = 0xffffff;
+    this.menu.buttons.rowClear.rect.isStroked = true;
+    this.menu.buttons.rowClear.rect.lineWidth = 5;
+
+    this.menu.buttons.check.rect.setScrollFactor(0);
+    this.menu.buttons.undo.rect.setScrollFactor(0);
+    this.menu.buttons.help.rect.setScrollFactor(0);
+    this.menu.buttons.restart.rect.setScrollFactor(0);
+    this.menu.buttons.rowClear.rect.setScrollFactor(0);
 
     this.menu.buttons.check.text = this.add.text(
       buttonwidth * 0 + 10, Constants.height - Constants.menuHeight + 10, "Check", { fontFamily: 'monospace', fontSize: '15px'}
@@ -176,6 +195,16 @@ export class GameScene extends Phaser.Scene {
       buttonwidth * 3 + 10, Constants.height - Constants.menuHeight + 10, "Restart", { fontFamily: 'monospace', fontSize: '15px'}
     );
     this.menu.buttons.restart.text.depth = 12;
+    this.menu.buttons.rowClear.text = this.add.text(
+      buttonwidth * 4 + 10, Constants.height - Constants.menuHeight + 10, "RowClear", { fontFamily: 'monospace', fontSize: '15px'}
+    );
+    this.menu.buttons.rowClear.text.depth = 12;
+
+    this.menu.buttons.check.text.setScrollFactor(0);
+    this.menu.buttons.undo.text.setScrollFactor(0);
+    this.menu.buttons.help.text.setScrollFactor(0);
+    this.menu.buttons.restart.text.setScrollFactor(0);
+    this.menu.buttons.rowClear.text.setScrollFactor(0);
 
     // TODO:
     // Functions on button press
