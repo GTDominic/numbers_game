@@ -3,9 +3,9 @@ export class GameCode {
     private board: Array<Array<{visible: boolean, value: number}>>;
     private startnumbers: number[];
 
-    constructor() {
+    constructor(numbers: number[]) {
         this.board = [];
-        this.startnumbers = [1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9];
+        this.startnumbers = numbers;
         this.appendArray(this.startnumbers);
     }
 
@@ -66,6 +66,19 @@ export class GameCode {
         if(this.board[e1.y][e1.x].value !== this.board[e2.y][e2.x].value && this.board[e1.y][e1.x].value + this.board[e2.y][e2.x].value !== 10) return;
         this.board[e1.y][e1.x].visible = false;
         this.board[e2.y][e2.x].visible = false;
+    }
+
+    public clearRows(): void {
+        for(let i = 0; i < this.board.length; i++) {
+            let rDelete = true;
+            for(let j = 0; j < this.board[i].length; j++) {
+                if(this.board[i][j].visible) rDelete = false;
+            }
+            if(rDelete) {
+                this.board.splice(i, 1);
+                i--;
+            }
+        }
     }
 
     private appendArray(numbers: number[]):void {

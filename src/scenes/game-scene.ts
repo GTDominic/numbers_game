@@ -2,7 +2,7 @@ import { GameCode } from "../scripts/gamecode";
 import { Constants } from "../config";
 
 export class GameScene extends Phaser.Scene {
-  private gameboard = new GameCode;
+  private gameboard = new GameCode([1,1,1,1,1,1,1,9]);
   private gamestate: {
     selPos: {x: number, y: number},
     elements: Array<Array<{val: {value: number, visible: boolean}, rect: Phaser.GameObjects.Rectangle, number: Phaser.GameObjects.Text}>>,
@@ -82,6 +82,11 @@ export class GameScene extends Phaser.Scene {
     this.draw();
   }
 
+  private clearRows(): void {
+    this.gameboard.clearRows();
+    this.draw();
+  }
+
   private draw(): void {
     // Used to store the length of the displayed board before appending
     // Gets updated if rows get deleted
@@ -98,6 +103,9 @@ export class GameScene extends Phaser.Scene {
       for(let i = this.gameboard.getBoardSizeY(); i < this.gamestate.elements.length; i++) {
         for(let j = 0; j < this.gamestate.elements[i].length; j++) this.deleteElement(j, i);
       }
+      for(let i = this.gamestate.elements.length - 1; i >= this.gameboard.getBoardSizeY(); i--) {
+        this.gamestate.elements.pop();
+      }
       lengthT = this.gamestate.elements.length;
       this.cameras.main.setBounds(0, 0, Constants.width, this.gamestate.elements.length * 30 + Constants.menuHeight);
       this.physics.world.setBounds(0, Constants.height / 2, Constants.width, this.gamestate.elements.length * 30 - Constants.height + Constants.menuHeight);
@@ -108,6 +116,9 @@ export class GameScene extends Phaser.Scene {
     }
     if(this.gameboard.getBoardSizeX(lengthT - 1) < this.gamestate.elements[lengthT - 1].length) {
       for(let j = this.gameboard.getBoardSizeX(lengthT - 1); j < this.gamestate.elements[lengthT - 1].length; j++) this.deleteElement(j, lengthT - 1);
+      for(let j = this.gamestate.elements[lengthT - 1].length - 1; j >= this.gameboard.getBoardSizeX(lengthT - 1); j--) {
+        this.gamestate.elements[lengthT - 1].pop();
+      }
     }
     for(let i = 0; i < lengthT; i++) {
       for(let j = 0; j < this.gamestate.elements[i].length; j++) {
@@ -215,6 +226,8 @@ export class GameScene extends Phaser.Scene {
     // Functions on button press
     this.menu.buttons.check.rect.setInteractive();
     this.menu.buttons.check.rect.on('pointerup', () => this.check());
+    this.menu.buttons.rowClear.rect.setInteractive();
+    this.menu.buttons.rowClear.rect.on('pointerup', () => this.clearRows());
   }
 
   private appendElement(x: number, y: number): void {
