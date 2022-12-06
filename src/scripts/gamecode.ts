@@ -1,21 +1,12 @@
 export class GameCode {
     // 9xX
     private board: Array<Array<{visible: boolean, value: number}>>;
+    private startnumbers: number[];
 
     constructor() {
-        this.board = [
-            [
-                {visible: true, value: 1},
-                {visible: false, value: 2},
-                {visible: true, value: 3},
-                {visible: false, value: 4},
-                {visible: true, value: 5},
-                {visible: false, value: 6},
-                {visible: true, value: 7},
-                {visible: false, value: 8},
-                {visible: true, value: 9},
-            ], 
-        ]
+        this.board = [];
+        this.startnumbers = [1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9];
+        this.appendArray(this.startnumbers);
     }
 
     public getBoardSizeY(): number {
@@ -85,7 +76,7 @@ export class GameCode {
                 }
             }
         }
-        while(numbers.length > 1) {
+        while(numbers.length > 0) {
             this.board.push([]);
             for(let i = 0; i < 9; i++) {
                 if(numbers.length > 0) this.board[this.board.length - 1].push({visible: true, value: numbers.shift()});
