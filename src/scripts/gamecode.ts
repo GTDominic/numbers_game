@@ -7,7 +7,7 @@ export class GameCode {
     constructor(numbers: number[]) {
         this.board = [];
         this.startnumbers = numbers;
-        this.appendArray(this.startnumbers);
+        this.appendArray([...this.startnumbers]);
     }
 
     public getBoardSizeY(): number {
@@ -38,6 +38,11 @@ export class GameCode {
         this.board[this.lastCross.e1.y][this.lastCross.e1.x].visible = true;
         this.board[this.lastCross.e2.y][this.lastCross.e2.x].visible = true;
         this.lastCross = null;
+    }
+
+    public restart(): void {
+        this.board = [];
+        this.appendArray([...this.startnumbers]);
     }
 
     public findNeighbours(x: number, y: number): {
