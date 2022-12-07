@@ -59,6 +59,29 @@ export class GameCode {
         };
     }
 
+    public help(): {e1: {x: number, y: number}, e2: {x: number, y: number}} {
+        for(let i = 0; i < this.board.length; i++) {
+            for(let j = 0; j < this.board[i].length; j++) {
+                if(!this.board[i][j].visible) continue;
+                let neighbor = this.rekBottomNeighbour(j, i + 1);
+                if(neighbor) {
+                    if(
+                        this.board[i][j].value === this.board[neighbor.y][neighbor.x].value
+                        || this.board[i][j].value + this.board[neighbor.y][neighbor.x].value == 10
+                    ) return {e1: {x: j, y: i}, e2: neighbor};
+                }
+                neighbor = this.rekRightNeighbour(j + 1, i);
+                if(neighbor) {
+                    if(
+                        this.board[i][j].value === this.board[neighbor.y][neighbor.x].value
+                        || this.board[i][j].value + this.board[neighbor.y][neighbor.x].value == 10
+                    ) return {e1: {x: j, y: i}, e2: neighbor};
+                }
+            }
+        }
+        return null;
+    }
+
     public cross(e1: {x: number, y:number}, e2: {x: number, y:number}):void {
         if(e1.x === e2.x) {
             if(e1.y > e2.y) {
