@@ -5,11 +5,13 @@ export class GameScene extends Phaser.Scene {
   private gameboard = new GameCode([1,1,1,1,1,1,1,9]);
   private gamestate: {
     selPos: {x: number, y: number},
+    highlightedPos: {e1: {x: number, y: number}, e2: {x: number, y: number}},
     elements: Array<Array<{val: {value: number, visible: boolean}, rect: Phaser.GameObjects.Rectangle, number: Phaser.GameObjects.Text}>>,
     scrollHelper: any,
     cursors: any,
   } = {
     selPos: null,
+    highlightedPos: null,
     elements: [],
     scrollHelper: null,
     cursors: null,
@@ -73,27 +75,40 @@ export class GameScene extends Phaser.Scene {
       return;
     }
     this.gameboard.cross(this.gamestate.selPos, {x: x, y: y});
+    this.clearHighlightedPos();
     this.gamestate.selPos = null;
     this.draw();
   }
 
+  private help(): void {
+    this.gamestate.highlightedPos = this.gameboard.help();
+    if(this.gamestate.highlightedPos) {
+      this.gamestate.elements[this.gamestate.highlightedPos.e1.y][this.gamestate.highlightedPos.e1.x].rect.isStroked = true;
+      this.gamestate.elements[this.gamestate.highlightedPos.e2.y][this.gamestate.highlightedPos.e2.x].rect.isStroked = true;
+    }
+  }
+
   private check(): void {
     this.gameboard.check();
+    this.clearHighlightedPos();
     this.draw();
   }
 
   private undo(): void {
     this.gameboard.undo();
+    this.clearHighlightedPos();
     this.draw();
   }
 
   private restart(): void {
     this.gameboard.restart();
+    this.clearHighlightedPos();
     this.draw();
   }
 
   private clearRows(): void {
     this.gameboard.clearRows();
+    this.clearHighlightedPos();
     this.draw();
   }
 
@@ -232,12 +247,12 @@ export class GameScene extends Phaser.Scene {
     this.menu.buttons.restart.text.setScrollFactor(0);
     this.menu.buttons.rowClear.text.setScrollFactor(0);
 
-    // TODO:
-    // Functions on button press
     this.menu.buttons.check.rect.setInteractive();
     this.menu.buttons.check.rect.on('pointerup', () => this.check());
     this.menu.buttons.undo.rect.setInteractive();
     this.menu.buttons.undo.rect.on('pointerup', () => this.undo());
+    this.menu.buttons.help.rect.setInteractive();
+    this.menu.buttons.help.rect.on('pointerup', () => this.help());
     this.menu.buttons.restart.rect.setInteractive();
     this.menu.buttons.restart.rect.on('pointerup', () => this.restart());
     this.menu.buttons.rowClear.rect.setInteractive();
@@ -257,6 +272,8 @@ export class GameScene extends Phaser.Scene {
       number: this.add.text(xPos - 7, yPos - 12 , this.gameboard.getValue(x, y).value.toString(), { fontFamily: 'monospace', color: properties.tColor, fontSize: '25px'}),
     });
     this.gamestate.elements[y][x].rect.depth = 1;
+    this.gamestate.elements[y][x].rect.strokeColor = 0xffff00;
+    this.gamestate.elements[y][x].rect.lineWidth = 5;
     this.gamestate.elements[y][x].number.depth = 2;
     this.gamestate.elements[y][x].rect.setInteractive();
     this.gamestate.elements[y][x].rect.on('pointerup', () => this.selection(x, y));
@@ -274,6 +291,14 @@ export class GameScene extends Phaser.Scene {
     this.gamestate.elements[y][x].number.setText(this.gameboard.getValue(x, y).value.toString());
     this.gamestate.elements[y][x].val.value = this.gameboard.getValue(x, y).value;
     this.gamestate.elements[y][x].val.visible = this.gameboard.getValue(x, y). visible;
+  }
+
+  private clearHighlightedPos(): void {
+    if(this.gamestate.highlightedPos) {
+      this.gamestate.elements[this.gamestate.highlightedPos.e1.y][this.gamestate.highlightedPos.e1.x].rect.isStroked = false;
+      this.gamestate.elements[this.gamestate.highlightedPos.e2.y][this.gamestate.highlightedPos.e2.x].rect.isStroked = false;
+      this.gamestate.highlightedPos = null;
+    }
   }
 
   private getProperties(x: number, y: number): {bgColor: number, tColor: string} {
