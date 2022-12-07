@@ -3,7 +3,7 @@ import { GameScene } from './scenes/game-scene';
 export const Constants = {
   height: 800,
   width: 450,
-  menuHeight: 50
+  menuHeight: 70
 };
 
 export const GameConfig: Phaser.Types.Core.GameConfig = {

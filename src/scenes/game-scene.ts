@@ -2,7 +2,7 @@ import { GameCode } from "../scripts/gamecode";
 import { Constants } from "../config";
 
 export class GameScene extends Phaser.Scene {
-  private gameboard = new GameCode;
+  private gameboard = new GameCode([1,1,1,1,1,1,1,9]);
   private gamestate: {
     selPos: {x: number, y: number},
     elements: Array<Array<{val: {value: number, visible: boolean}, rect: Phaser.GameObjects.Rectangle, number: Phaser.GameObjects.Text}>>,
@@ -20,7 +20,8 @@ export class GameScene extends Phaser.Scene {
       check: {rect: Phaser.GameObjects.Rectangle, text: Phaser.GameObjects.Text, symbol: Phaser.GameObjects.Sprite},
       undo: {rect: Phaser.GameObjects.Rectangle, text: Phaser.GameObjects.Text, symbol: Phaser.GameObjects.Sprite},
       help: {rect: Phaser.GameObjects.Rectangle, text: Phaser.GameObjects.Text, symbol: Phaser.GameObjects.Sprite},
-      cross: {rect: Phaser.GameObjects.Rectangle, text: Phaser.GameObjects.Text, symbol: Phaser.GameObjects.Sprite},
+      restart: {rect: Phaser.GameObjects.Rectangle, text: Phaser.GameObjects.Text, symbol: Phaser.GameObjects.Sprite},
+      rowClear: {rect: Phaser.GameObjects.Rectangle, text: Phaser.GameObjects.Text, symbol: Phaser.GameObjects.Sprite},
     },
   } = {
     bar: null,
@@ -28,7 +29,8 @@ export class GameScene extends Phaser.Scene {
       check: {rect: null, text: null, symbol: null},
       undo: {rect: null, text: null, symbol: null},
       help: {rect: null, text: null, symbol: null},
-      cross: {rect: null, text: null, symbol: null},
+      restart: {rect: null, text: null, symbol: null},
+      rowClear: {rect: null, text: null, symbol: null},
     },
   }
 
@@ -75,6 +77,26 @@ export class GameScene extends Phaser.Scene {
     this.draw();
   }
 
+  private check(): void {
+    this.gameboard.check();
+    this.draw();
+  }
+
+  private undo(): void {
+    this.gameboard.undo();
+    this.draw();
+  }
+
+  private restart(): void {
+    this.gameboard.restart();
+    this.draw();
+  }
+
+  private clearRows(): void {
+    this.gameboard.clearRows();
+    this.draw();
+  }
+
   private draw(): void {
     // Used to store the length of the displayed board before appending
     // Gets updated if rows get deleted
@@ -91,6 +113,9 @@ export class GameScene extends Phaser.Scene {
       for(let i = this.gameboard.getBoardSizeY(); i < this.gamestate.elements.length; i++) {
         for(let j = 0; j < this.gamestate.elements[i].length; j++) this.deleteElement(j, i);
       }
+      for(let i = this.gamestate.elements.length - 1; i >= this.gameboard.getBoardSizeY(); i--) {
+        this.gamestate.elements.pop();
+      }
       lengthT = this.gamestate.elements.length;
       this.cameras.main.setBounds(0, 0, Constants.width, this.gamestate.elements.length * 30 + Constants.menuHeight);
       this.physics.world.setBounds(0, Constants.height / 2, Constants.width, this.gamestate.elements.length * 30 - Constants.height + Constants.menuHeight);
@@ -101,6 +126,9 @@ export class GameScene extends Phaser.Scene {
     }
     if(this.gameboard.getBoardSizeX(lengthT - 1) < this.gamestate.elements[lengthT - 1].length) {
       for(let j = this.gameboard.getBoardSizeX(lengthT - 1); j < this.gamestate.elements[lengthT - 1].length; j++) this.deleteElement(j, lengthT - 1);
+      for(let j = this.gamestate.elements[lengthT - 1].length - 1; j >= this.gameboard.getBoardSizeX(lengthT - 1); j--) {
+        this.gamestate.elements[lengthT - 1].pop();
+      }
     }
     for(let i = 0; i < lengthT; i++) {
       for(let j = 0; j < this.gamestate.elements[i].length; j++) {
@@ -110,10 +138,110 @@ export class GameScene extends Phaser.Scene {
   }
 
   private createMenu(): void {
+    let buttonwidth = Constants.width / 5;
     this.menu.bar = this.add.rectangle(Constants.width / 2, Constants.height - Constants.menuHeight / 2, Constants.width, Constants.menuHeight, 0x000000);
     this.menu.bar.setScrollFactor(0);
-    // this.menu.bar.setScale(2);
     this.menu.bar.depth = 10;
+
+    this.menu.buttons.check.rect = this.add.rectangle(
+      buttonwidth / 2 + buttonwidth * 0, 
+      Constants.height - Constants.menuHeight / 2, 
+      buttonwidth, 
+      Constants.menuHeight, 
+      0x111111
+    );
+    this.menu.buttons.check.rect.depth = 11;
+    this.menu.buttons.check.rect.strokeColor = 0xffffff;
+    this.menu.buttons.check.rect.isStroked = true;
+    this.menu.buttons.check.rect.lineWidth = 5;
+    this.menu.buttons.undo.rect = this.add.rectangle(
+      buttonwidth / 2 + buttonwidth * 1, 
+      Constants.height - Constants.menuHeight / 2, 
+      buttonwidth, 
+      Constants.menuHeight, 
+      0x111111
+    );
+    this.menu.buttons.undo.rect.depth = 11;
+    this.menu.buttons.undo.rect.strokeColor = 0xffffff;
+    this.menu.buttons.undo.rect.isStroked = true;
+    this.menu.buttons.undo.rect.lineWidth = 5;
+    this.menu.buttons.help.rect = this.add.rectangle(
+      buttonwidth / 2 + buttonwidth * 2, 
+      Constants.height - Constants.menuHeight / 2, 
+      buttonwidth, 
+      Constants.menuHeight, 
+      0x111111
+    );
+    this.menu.buttons.help.rect.depth = 11;
+    this.menu.buttons.help.rect.strokeColor = 0xffffff;
+    this.menu.buttons.help.rect.isStroked = true;
+    this.menu.buttons.help.rect.lineWidth = 5;
+    this.menu.buttons.restart.rect = this.add.rectangle(
+      buttonwidth / 2 + buttonwidth * 3, 
+      Constants.height - Constants.menuHeight / 2, 
+      buttonwidth, 
+      Constants.menuHeight, 
+      0x111111
+    );
+    this.menu.buttons.restart.rect.depth = 11;
+    this.menu.buttons.restart.rect.strokeColor = 0xffffff;
+    this.menu.buttons.restart.rect.isStroked = true;
+    this.menu.buttons.restart.rect.lineWidth = 5;
+    this.menu.buttons.rowClear.rect = this.add.rectangle(
+      buttonwidth / 2 + buttonwidth * 4, 
+      Constants.height - Constants.menuHeight / 2, 
+      buttonwidth, 
+      Constants.menuHeight, 
+      0x111111
+    );
+    this.menu.buttons.rowClear.rect.depth = 11;
+    this.menu.buttons.rowClear.rect.strokeColor = 0xffffff;
+    this.menu.buttons.rowClear.rect.isStroked = true;
+    this.menu.buttons.rowClear.rect.lineWidth = 5;
+
+    this.menu.buttons.check.rect.setScrollFactor(0);
+    this.menu.buttons.undo.rect.setScrollFactor(0);
+    this.menu.buttons.help.rect.setScrollFactor(0);
+    this.menu.buttons.restart.rect.setScrollFactor(0);
+    this.menu.buttons.rowClear.rect.setScrollFactor(0);
+
+    this.menu.buttons.check.text = this.add.text(
+      buttonwidth * 0 + 10, Constants.height - Constants.menuHeight + 10, "Check", { fontFamily: 'monospace', fontSize: '15px'}
+    );
+    this.menu.buttons.check.text.depth = 12;
+    this.menu.buttons.undo.text = this.add.text(
+      buttonwidth * 1 + 10, Constants.height - Constants.menuHeight + 10, "Undo", { fontFamily: 'monospace', fontSize: '15px'}
+    );
+    this.menu.buttons.undo.text.depth = 12;
+    this.menu.buttons.help.text = this.add.text(
+      buttonwidth * 2 + 10, Constants.height - Constants.menuHeight + 10, "Help", { fontFamily: 'monospace', fontSize: '15px'}
+    );
+    this.menu.buttons.help.text.depth = 12;
+    this.menu.buttons.restart.text = this.add.text(
+      buttonwidth * 3 + 10, Constants.height - Constants.menuHeight + 10, "Restart", { fontFamily: 'monospace', fontSize: '15px'}
+    );
+    this.menu.buttons.restart.text.depth = 12;
+    this.menu.buttons.rowClear.text = this.add.text(
+      buttonwidth * 4 + 10, Constants.height - Constants.menuHeight + 10, "RowClear", { fontFamily: 'monospace', fontSize: '15px'}
+    );
+    this.menu.buttons.rowClear.text.depth = 12;
+
+    this.menu.buttons.check.text.setScrollFactor(0);
+    this.menu.buttons.undo.text.setScrollFactor(0);
+    this.menu.buttons.help.text.setScrollFactor(0);
+    this.menu.buttons.restart.text.setScrollFactor(0);
+    this.menu.buttons.rowClear.text.setScrollFactor(0);
+
+    // TODO:
+    // Functions on button press
+    this.menu.buttons.check.rect.setInteractive();
+    this.menu.buttons.check.rect.on('pointerup', () => this.check());
+    this.menu.buttons.undo.rect.setInteractive();
+    this.menu.buttons.undo.rect.on('pointerup', () => this.undo());
+    this.menu.buttons.restart.rect.setInteractive();
+    this.menu.buttons.restart.rect.on('pointerup', () => this.restart());
+    this.menu.buttons.rowClear.rect.setInteractive();
+    this.menu.buttons.rowClear.rect.on('pointerup', () => this.clearRows());
   }
 
   private appendElement(x: number, y: number): void {
