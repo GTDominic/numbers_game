@@ -2,6 +2,7 @@ export class GameCode {
     // 9xX
     private board: Array<Array<{visible: boolean, value: number}>>;
     private startnumbers: number[];
+    private lastCross: {e1: {x: number, y: number}, e2: {x: number, y: number}};
 
     constructor(numbers: number[]) {
         this.board = [];
@@ -22,6 +23,7 @@ export class GameCode {
     }
 
     public check(): void {
+        this.lastCross = null;
         let numbers: number[] = [];
         for(let i = 0; i < this.board.length; i++) {
             for(let j = 0; j < this.board[i].length; j++) {
@@ -29,6 +31,13 @@ export class GameCode {
             }
         }
         this.appendArray(numbers);
+    }
+
+    public undo(): void {
+        if(!this.lastCross) return;
+        this.board[this.lastCross.e1.y][this.lastCross.e1.x].visible = true;
+        this.board[this.lastCross.e2.y][this.lastCross.e2.x].visible = true;
+        this.lastCross = null;
     }
 
     public findNeighbours(x: number, y: number): {
@@ -66,9 +75,11 @@ export class GameCode {
         if(this.board[e1.y][e1.x].value !== this.board[e2.y][e2.x].value && this.board[e1.y][e1.x].value + this.board[e2.y][e2.x].value !== 10) return;
         this.board[e1.y][e1.x].visible = false;
         this.board[e2.y][e2.x].visible = false;
+        this.lastCross = {e1: e1, e2: e2};
     }
 
     public clearRows(): void {
+        this.lastCross = null;
         for(let i = 0; i < this.board.length; i++) {
             let rDelete = true;
             for(let j = 0; j < this.board[i].length; j++) {

@@ -82,6 +82,11 @@ export class GameScene extends Phaser.Scene {
     this.draw();
   }
 
+  private undo(): void {
+    this.gameboard.undo();
+    this.draw();
+  }
+
   private clearRows(): void {
     this.gameboard.clearRows();
     this.draw();
@@ -226,6 +231,8 @@ export class GameScene extends Phaser.Scene {
     // Functions on button press
     this.menu.buttons.check.rect.setInteractive();
     this.menu.buttons.check.rect.on('pointerup', () => this.check());
+    this.menu.buttons.undo.rect.setInteractive();
+    this.menu.buttons.undo.rect.on('pointerup', () => this.undo());
     this.menu.buttons.rowClear.rect.setInteractive();
     this.menu.buttons.rowClear.rect.on('pointerup', () => this.clearRows());
   }
