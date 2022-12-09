@@ -1,8 +1,9 @@
 import { GameCode } from "../scripts/gamecode";
 import { Constants } from "../config";
+import { values } from "../scripts/shared";
 
 export class GameScene extends Phaser.Scene {
-  private gameboard = new GameCode([1,1,1,1,1,1,1,9]);
+  private gameboard: GameCode;
   private gamestate: {
     selPos: {x: number, y: number},
     highlightedPos: {e1: {x: number, y: number}, e2: {x: number, y: number}},
@@ -43,6 +44,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   create(): void {
+    this.gameboard = new GameCode(values.startarray);
     this.draw();
     this.createMenu();
     this.gamestate.scrollHelper = this.physics.add.sprite(0, Constants.height / 2, '').setScale(0);
