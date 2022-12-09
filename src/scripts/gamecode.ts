@@ -108,7 +108,7 @@ export class GameCode {
 
     public clearRows(): void {
         this.lastCross = null;
-        for(let i = 0; i < this.board.length; i++) {
+        for(let i = 0; i < this.board.length - 1; i++) {
             let rDelete = true;
             for(let j = 0; j < this.board[i].length; j++) {
                 if(this.board[i][j].visible) rDelete = false;
